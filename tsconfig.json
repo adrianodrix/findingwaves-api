@@ -17,6 +17,7 @@
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@src/*": ["./src/*"],
@@ -29,6 +30,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
+  "types": [
+  "node"
+  ],
   "include": [
     "./src/**/*.ts",
     "./test/**/*.ts"
