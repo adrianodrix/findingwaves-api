@@ -1,8 +1,12 @@
-#Finding Wages
+# Finding Wages
+>## A Node.js API with Typescript
 
-site: https://www.nodejs-typescript-api.com/curso-gratis/
+[Node.js API Course](https://www.nodejs-typescript-api.com/curso-gratis/)
 
-playlist: https://www.youtube.com/playlist?list=PLlAbYrWSYTiPanrzauGa7vMuve7_vnXG_
+[Playlist no Youtube](https://www.youtube.com/playlist?list=PLlAbYrWSYTiPanrzauGa7vMuve7_vnXG_)
 
-Apps
+[A quick introduction to clean architecture](https://www.freecodecamp.org/news/a-quick-introduction-to-clean-architecture-990c014448d2/)
+
+## Apps
+
 [Web Sequenced Diagrams](https://www.websequencediagrams.com/)
