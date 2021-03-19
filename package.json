@@ -12,7 +12,8 @@
     "start:dev": "ts-node-dev 'src/index.ts'",
     "clean": "rimraf dist",
     "lint": "eslint ./src ./test --ext .ts",
-    "lint:fix": "eslint ./src ./test --ext .ts --fix"
+    "lint:fix": "eslint ./src ./test --ext .ts --fix",
+    "test:functional": "jest --projects ./test --forceExit --runInBand"
   },
   "devDependencies": {
     "@types/jest": "^26.0.21",
