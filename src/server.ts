@@ -3,7 +3,6 @@ import * as database from '@src/database';
 import express, { Application } from 'express';
 import { BeachesController } from './controllers/beaches';
 import { ForecastController } from './controllers/forecast';
-import './utils/module-alias';
 
 export class SetupServer extends Server {
   constructor(private port = 3000) {
@@ -32,6 +31,12 @@ export class SetupServer extends Server {
 
   public async close(): Promise<void> {
     await database.close();
+  }
+
+  public start(): void {
+    this.app.listen(this.port, () => {
+      console.info('Server listening on port: ', this.port);
+    });
   }
 
   private async databaseSetup(): Promise<void> {
