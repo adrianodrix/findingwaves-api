@@ -1,41 +1,60 @@
-import supertest from 'supertest';
+import { Beach } from '@src/models/beach';
+import { User } from '@src/models/user';
+import AuthService from '@src/services/auth';
 
-describe('Beach forescast funcional tests', () => {
-  it('should return a forecast with just a few times', async() => {
-    const { body, status } = await supertest(app).get('/forecast');
-    expect(status).toBe(200);
-    expect(body).toBe([{
-      "time": "2020-04-26T00:00:00+00:00",
-      "forecast": [{
-        "lat": -33.792726,
-        "lng": 151.289824,
-        "name": "Manly",
-        "position": "E",
-        "rating": 2,
-        "swellDirection": 64.26,
-        "swellHeight": 0.15,
-        "swellPeriod": 3.89,
-        "time": "2020-04-26T00:00:00+00:00",
-        "waveDirection": 231.38,
-        "waveHeight": 0.47,
-        "windDirection": 299.45
-      }]
-    }, {
-      "time": "2020-04-26T01:00:00+00:00",
-      "forecast": [{
-        "lat": -33.792726,
-        "lng": 151.289824,
-        "name": "Manly",
-        "position": "E",
-        "rating": 2,
-        "swellDirection": 123.41,
-        "swellHeight": 0.21,
-        "swellPeriod": 3.67,
-        "time": "2020-04-26T01:00:00+00:00",
-        "waveDirection": 232.12,
-        "waveHeight": 0.46,
-        "windDirection": 310.48
-      }] }
-    ]);
+describe('Beaches functional tests', () => {
+  const defaultUser = {
+    name: 'John Doe',
+    email: 'john@mail.com',
+    password: 'any_password',
+  };
+
+  let token: string;
+  beforeEach(async () => {
+    await Beach.deleteMany({});
+    await User.deleteMany({});
+    const user = await new User(defaultUser).save();
+    token = AuthService.generateToken(user.toJSON());
+  });
+
+  describe('When creating a beach', () => {
+    it('should create a beach with success', async () => {
+      const newBeach = {
+        lat: -33.792726,
+        lng: 151.289824,
+        name: 'Manly',
+        position: 'E',
+      };
+
+      const response = await global.testRequest
+        .post('/beaches')
+        .set('x-access-token', token)
+        .send(newBeach);
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual(expect.objectContaining(newBeach));
+    });
+
+    it('should return 422 when there is a validation error', async () => {
+      const newBeach = {
+        lat: 'invalid_string',
+        lng: 151.289824,
+        name: 'Manly',
+        position: 'E',
+      };
+      const response = await global.testRequest
+        .post('/beaches')
+        .set('x-access-token', token)
+        .send(newBeach);
+
+      expect(response.status).toBe(422);
+      expect(response.body).toEqual({
+        error:
+          'Beach validation failed: lat: Cast to Number failed for value "invalid_string" at path "lat"',
+      });
+    });
+
+    it.skip('should return 500 when there is any error other than validation error', async () => {
+      //TODO think in a way to throw a 500
+    });
   });
 });
