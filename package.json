@@ -1,7 +1,7 @@
 {
   "name": "findingwaves-api",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.0.2",
+  "main": "dist/src/index.js",
   "author": "Adriano Santos <adrianodrix@gmail.com>",
   "license": "UNLICENSED",
   "scripts": {
