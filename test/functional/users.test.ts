@@ -114,7 +114,16 @@ describe('Users Functional Tests', () => {
         .set({ 'x-access-token': token });
 
       expect(status).toBe(200);
-      expect(body).toMatchObject(JSON.parse(JSON.stringify({ user })));
+      expect(body).toMatchObject(
+        JSON.parse(
+          JSON.stringify({
+            user: {
+              name: 'John Doe',
+              email: 'john@mail.com',
+            },
+          })
+        )
+      );
     });
 
     it(`Should return Not Found, when the user is not found`, async () => {
