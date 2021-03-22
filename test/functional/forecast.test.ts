@@ -68,10 +68,8 @@ describe('Beach forescast funcional tests', () => {
       .query({ lat: '-33.792726', lng: '151.289824' })
       .replyWithError('Something went wrong');
 
-    const { status } = await global.testRequest
-      .get(`/forecast`)
-      .set('x-access-token', token);
+    const { status } = await global.testRequest.get(`/forecast`);
 
-    expect(status).toBe(500);
+    expect(status).toBe(400);
   });
 });
