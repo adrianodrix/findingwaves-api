@@ -30,6 +30,7 @@ describe('Beaches functional tests', () => {
         .post('/beaches')
         .set('x-access-token', token)
         .send(newBeach);
+
       expect(response.status).toBe(201);
       expect(response.body).toEqual(expect.objectContaining(newBeach));
     });
@@ -50,8 +51,7 @@ describe('Beaches functional tests', () => {
       expect(response.body).toEqual({
         code: 400,
         error: 'Bad Request',
-        message:
-          'Beach validation failed: lat: Cast to Number failed for value "invalid_string" at path "lat"',
+        message: 'request.body.lat should be number',
       });
     });
 

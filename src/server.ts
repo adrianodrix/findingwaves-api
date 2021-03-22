@@ -2,7 +2,7 @@ import expressPino from 'express-pino-logger';
 import cors from 'cors';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
-import { OpenApiValidator } from 'express-openapi-validator';
+import * as OpenApiValidator from 'express-openapi-validator';
 import { OpenAPIV3 } from 'express-openapi-validator/dist/framework/types';
 
 import { Server } from '@overnightjs/core';
@@ -13,6 +13,7 @@ import { ForecastController } from './controllers/forecast';
 import { UsersController } from './controllers/users';
 import logger from './logger';
 import apiSchema from './api.schema.json';
+import { apiErrorValidator } from './middlewares/api-error-validator';
 
 export class SetupServer extends Server {
   constructor(private port = 3000) {
@@ -24,6 +25,9 @@ export class SetupServer extends Server {
     await this.docsSetup();
     this.setupControllers();
     await this.databaseSetup();
+
+    //must be the last
+    this.setupErrorHandlers();
   }
 
   public getApp(): Application {
@@ -72,10 +76,17 @@ export class SetupServer extends Server {
 
   private async docsSetup(): Promise<void> {
     this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSchema));
-    await new OpenApiValidator({
-      apiSpec: apiSchema as OpenAPIV3.Document,
-      validateRequests: true, //we do it
-      validateResponses: true,
-    }).install(this.app);
+
+    this.app.use(
+      OpenApiValidator.middleware({
+        apiSpec: apiSchema as OpenAPIV3.Document,
+        validateRequests: true, // (default)
+        validateResponses: true, // false by default
+      })
+    );
+  }
+
+  private setupErrorHandlers(): void {
+    this.app.use(apiErrorValidator);
   }
 }

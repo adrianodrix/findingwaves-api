@@ -63,7 +63,7 @@
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-openapi-validator": "3.16.1",
+    "express-openapi-validator": "^4",
     "express-pino-logger": "^6.0.0",
     "helmet": "^4.4.1",
     "http-status-codes": "^2.1.4",
