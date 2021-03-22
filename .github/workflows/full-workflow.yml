@@ -34,9 +34,8 @@ jobs:
       - name: Run all tests
         run: yarn test
 
-<<<<<<< HEAD
     - shell: bash
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/main'
       name: Create SSH deployment key
       env:
         SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -44,21 +43,6 @@ jobs:
 
     - name: Deployment
       if: github.ref == 'refs/heads/main'
-      run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/jg2p1vgk/waldemar-surf-forecast-com.git && git push umbler master
+      run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/jg2p1vgk/waldemar-surf-forecast-com.git && git push umbler main
       env:
         CI: true
-=======
-      - shell: bash
-        if: github.ref == 'refs/heads/main'
-        name: Create SSH deployment key
-        env:
-          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: ./scripts/deploy.sh
-
-    - name: Deployment
-        if: github.ref == 'refs/heads/main'
-        run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/kqxrdw8e/sandbox-findingwaves-com.git && git push umbler main
-        env:
-          CI: true
-
->>>>>>> release/0.0.2
