@@ -4,6 +4,7 @@ import express, { Application } from 'express';
 import { BeachesController } from './controllers/beaches';
 import { ForecastController } from './controllers/forecast';
 import { UsersController } from './controllers/users';
+import config from 'config';
 
 export class SetupServer extends Server {
   constructor(private port = 3000) {
