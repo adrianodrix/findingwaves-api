@@ -43,6 +43,6 @@ jobs:
 
       - name: Deployment
         if: github.ref == 'refs/heads/main'
-        run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/jg2p1vgk/waldemar-surf-forecast-com.git && git push umbler main
+        run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/kqxrdw8e/sandbox-findingwaves-com.git && git push umbler main
         env:
           CI: true
