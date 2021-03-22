@@ -1,3 +1,7 @@
+import expressPino from 'express-pino-logger';
+import cors from 'cors';
+import helmet from 'helmet';
+
 import { Server } from '@overnightjs/core';
 import * as database from '@src/database';
 import express, { Application } from 'express';
@@ -23,6 +27,17 @@ export class SetupServer extends Server {
 
   private setupExpress(): void {
     this.app.use(express.json());
+    this.app.use(helmet());
+    this.app.use(
+      cors({
+        origin: '*',
+      })
+    );
+    this.app.use(
+      expressPino({
+        logger,
+      })
+    );
   }
 
   private setupControllers(): void {
