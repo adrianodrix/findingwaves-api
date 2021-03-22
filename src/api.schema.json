@@ -246,6 +246,21 @@
               }
             }
           },
+          "401": {
+            "description": "jwt malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "jwt malformed",
+                  "code": "401",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Too many requests to the '/forecast endpoint'",
             "content": {
