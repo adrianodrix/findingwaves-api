@@ -1,5 +1,6 @@
 import config, { IConfig } from 'config';
 import mongoose, { Mongoose } from 'mongoose';
+import logger from './logger';
 
 const dbConfig: IConfig = config.get('App.database');
 
@@ -12,7 +13,7 @@ export const connect = async (): Promise<Mongoose> =>
       useUnifiedTopology: true,
     },
     (err) => {
-      if (err) console.error(err?.message);
+      if (err) logger.error(err?.message);
     }
   );
 
