@@ -9,6 +9,7 @@
 
 [A quick introduction to clean architecture](https://www.freecodecamp.org/news/a-quick-introduction-to-clean-architecture-990c014448d2/)
 
->## Apps
+>## Utils
 
 [Web Sequenced Diagrams](https://www.websequencediagrams.com/)
+[Graceful shutdown in NodeJS](https://hackernoon.com/graceful-shutdown-in-nodejs-2f8f59d1c357)

@@ -14,6 +14,10 @@
         "apiToken": "any_token",
         "cacheApiTtl": 10000
       }
+    },
+    "logger": {
+      "enabled": true,
+      "level": "info"
     }
   }
 }

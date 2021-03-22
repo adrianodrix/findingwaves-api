@@ -1,3 +1,4 @@
+import logger from '@src/logger';
 import { InternalError } from '@src/utils/errors/internal-error';
 import * as HTTPUtil from '@src/utils/request';
 import config, { IConfig } from 'config';
@@ -75,6 +76,7 @@ export class StormGlass {
       );
       return this.normalizeResponse(response.data);
     } catch (error) {
+      logger.error(error);
       if (HTTPUtil.Request.isRequestError(error)) {
         throw new StormGlassResponseError(
           `Error: ${JSON.stringify(error.response.data)} Code: ${

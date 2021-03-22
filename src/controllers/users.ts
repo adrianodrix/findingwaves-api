@@ -1,4 +1,5 @@
 import { Controller, Post } from '@overnightjs/core';
+import logger from '@src/logger';
 import { User } from '@src/models/user';
 import AuthService from '@src/services/auth';
 import { Request, Response } from 'express';
@@ -14,7 +15,7 @@ export class UsersController extends BaseController {
 
       res.status(201).send(result);
     } catch (error) {
-      this.sendCreatedUpdateErrorResponse(res, error);
+      this.sendCreateUpdateErrorResponse(res, error);
     }
   }
 
@@ -23,22 +24,29 @@ export class UsersController extends BaseController {
     req: Request,
     res: Response
   ): Promise<Response | undefined> {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).send({
-        code: 401,
-        error: 'User not found!',
-      });
-    }
-    if (!(await AuthService.comparePasswords(password, user.password))) {
-      return res.status(401).send({
-        code: 401,
-        error: 'Credentials invalid!',
-      });
-    }
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) {
+        return this.sendErrorResponse(res, {
+          code: 401,
+          message: 'User not found!',
+          description: 'Try verifying your email address.',
+        });
+      }
+      if (!(await AuthService.comparePasswords(password, user.password))) {
+        return this.sendErrorResponse(res, {
+          code: 401,
+          message: 'Password does not match!',
+        });
+      }
 
-    const token = AuthService.generateToken(user.toJSON());
-    return res.status(200).send({ token });
+      const token = AuthService.generateToken(user.toJSON());
+      return res.status(200).send({ token });
+    } catch (error) {
+      logger.error(error);
+      this.sendCreateUpdateErrorResponse(res, error);
+      return;
+    }
   }
 }
