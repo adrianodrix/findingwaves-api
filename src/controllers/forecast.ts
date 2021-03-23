@@ -18,7 +18,7 @@ const forecast = new Forecast();
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute in milliseconds
-  max: 2,
+  max: 100,
   keyGenerator(req: Request): string {
     return req.ip;
   },
@@ -42,7 +42,8 @@ export class ForecastController extends BaseController {
     res: Response
   ): Promise<void> {
     try {
-      const beaches = await Beach.find({ user: req.decoded?.id });
+      const beaches = await Beach.find({});
+
       const forecastData = await forecast.processForecastForBeaches(beaches);
       res.status(200).send(forecastData);
     } catch (error) {

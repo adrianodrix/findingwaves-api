@@ -1,3 +1,4 @@
+import { StormGlass } from '@src/clients/stormGlass';
 import { Beach, GeoPosition } from '@src/models/beach';
 import { User } from '@src/models/user';
 import AuthService from '@src/services/auth';
@@ -17,7 +18,7 @@ describe('Beach forescast funcional tests', () => {
   beforeEach(async () => {
     await User.deleteMany({});
     const user = await new User(defaultUser).save();
-    token = AuthService.generateToken(user.toJSON());
+    token = AuthService.generateToken(user.id);
 
     await Beach.deleteMany({});
     const defaultBeach = {
@@ -25,7 +26,7 @@ describe('Beach forescast funcional tests', () => {
       lng: 151.289824,
       name: 'Manly',
       position: GeoPosition.E,
-      user: user.id,
+      userId: user.id,
     };
     const beach = new Beach(defaultBeach);
     await beach.save();
@@ -52,21 +53,15 @@ describe('Beach forescast funcional tests', () => {
     const { body, status } = await global.testRequest
       .get('/forecast')
       .set('x-access-token', token);
+
     expect(status).toBe(200);
     expect(body).toEqual(apiForecastResponse1BeachFixture);
   });
 
   it('should return 500 if something goes wrong during the processing', async () => {
-    nock('https://api.stormglass.io:443', {
-      encodedQueryParams: true,
-      reqheaders: {
-        Authorization: (): boolean => true,
-      },
-    })
-      .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
-      .get('/v1/weather/point')
-      .query({ lat: '-33.792726', lng: '151.289824' })
-      .replyWithError('Something went wrong');
+    jest
+      .spyOn(StormGlass.prototype, 'fetchPoints')
+      .mockImplementationOnce(() => Promise.reject('fail to get forecast'));
 
     const { status } = await global.testRequest
       .get(`/forecast`)

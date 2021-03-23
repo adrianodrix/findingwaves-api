@@ -108,7 +108,7 @@ describe('Users Functional Tests', () => {
         password: '1234',
       };
       const user = await new User(newUser).save();
-      const token = AuthService.generateToken(user.toJSON());
+      const token = AuthService.generateToken(user.id);
       const { body, status } = await global.testRequest
         .get('/users/me')
         .set({ 'x-access-token': token });
@@ -134,7 +134,7 @@ describe('Users Functional Tests', () => {
       };
       //create a new user but don't save it
       const user = new User(newUser);
-      const token = AuthService.generateToken(user.toJSON());
+      const token = AuthService.generateToken(user.id);
       const { body, status } = await global.testRequest
         .get('/users/me')
         .set({ 'x-access-token': token });
