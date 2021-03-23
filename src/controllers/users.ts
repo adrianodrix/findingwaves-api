@@ -42,7 +42,7 @@ export class UsersController extends BaseController {
         });
       }
 
-      const token = AuthService.generateToken(user.toJSON());
+      const token = AuthService.generateToken(user.id);
       return res.status(200).send({ token });
     } catch (error) {
       logger.error(error);
@@ -54,8 +54,8 @@ export class UsersController extends BaseController {
   @Get('me')
   @Middleware(authMiddleware)
   public async me(req: Request, res: Response): Promise<Response> {
-    const email = req.decoded ? req.decoded.email : undefined;
-    const user = await User.findOne({ email }, { password: 0 });
+    const userId = req.context?.userId;
+    const user = await User.findOne({ _id: userId }, { password: 0 });
     if (!user) {
       return this.sendErrorResponse(res, {
         code: 404,
