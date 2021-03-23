@@ -17,8 +17,8 @@
     "style:check": "prettier --check src/**/*.ts test/**/*.ts",
     "style:fix": "prettier --write src/**/*.ts test/**/*.ts",
     "test": "yarn lint && yarn style:check && yarn test:unit && yarn test:functional",
-    "test:functional": "dotenv -e .env -- jest --projects ./test --runInBand",
-    "test:unit": "dotenv -e .env -- jest"
+    "test:functional": "jest --projects ./test --runInBand",
+    "test:unit": "jest"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
